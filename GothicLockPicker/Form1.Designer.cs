@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            button2 = new Button();
             TableView = new DataGridView();
             Position = new DataGridViewTextBoxColumn();
             ValueLock = new DataGridViewComboBoxColumn();
-            button3 = new Button();
-            textBox1 = new TextBox();
+            button_Remove = new Button();
+            button_Add = new Button();
+            button_Solve = new Button();
+            textBox_Result = new TextBox();
             label1 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
             numericUpDown1_6 = new NumericUpDown();
@@ -87,7 +87,8 @@
             label14 = new Label();
             label2 = new Label();
             Limit_Gscore = new Label();
-            numericUpDown1 = new NumericUpDown();
+            Limit_Steps = new NumericUpDown();
+            button_Reset = new Button();
             ((System.ComponentModel.ISupportInitialize)TableView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1_6).BeginInit();
@@ -126,29 +127,8 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Limit_Steps).BeginInit();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(96, 187);
-            button1.Margin = new Padding(3, 2, 3, 2);
-            button1.Name = "button1";
-            button1.Size = new Size(82, 22);
-            button1.TabIndex = 0;
-            button1.Text = "Remove";
-            button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.Location = new Point(9, 187);
-            button2.Margin = new Padding(3, 2, 3, 2);
-            button2.Name = "button2";
-            button2.Size = new Size(82, 22);
-            button2.TabIndex = 1;
-            button2.Text = "Add New";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // TableView
             // 
@@ -156,49 +136,83 @@
             TableView.AllowUserToDeleteRows = false;
             TableView.AllowUserToResizeColumns = false;
             TableView.AllowUserToResizeRows = false;
+            TableView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             TableView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             TableView.Columns.AddRange(new DataGridViewColumn[] { Position, ValueLock });
             TableView.Location = new Point(2, 0);
             TableView.Margin = new Padding(3, 2, 3, 2);
             TableView.Name = "TableView";
+            TableView.RowHeadersVisible = false;
             TableView.RowHeadersWidth = 51;
-            TableView.Size = new Size(261, 178);
+            TableView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            TableView.Size = new Size(204, 178);
             TableView.TabIndex = 2;
+            TableView.CellContentClick += TableView_CellContentClick;
             // 
             // Position
             // 
+            Position.DataPropertyName = "Position";
             Position.HeaderText = "Position";
             Position.Name = "Position";
             Position.ReadOnly = true;
             // 
             // ValueLock
             // 
+            ValueLock.DataPropertyName = "ValueLock";
             ValueLock.HeaderText = "ValueLock";
-            ValueLock.Items.AddRange(new object[] { "0", "1", "2", "3", "4", "5", "6", "7" });
+            ValueLock.Items.AddRange(new object[] { "0", "1", "2", "3", "4", "5", "6", "7", "8" });
             ValueLock.Name = "ValueLock";
             // 
-            // button3
+            // button_Remove
             // 
-            button3.Location = new Point(9, 288);
-            button3.Margin = new Padding(3, 2, 3, 2);
-            button3.Name = "button3";
-            button3.Size = new Size(82, 22);
-            button3.TabIndex = 3;
-            button3.Text = "Solve!";
-            button3.UseVisualStyleBackColor = true;
+            button_Remove.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button_Remove.Location = new Point(96, 187);
+            button_Remove.Margin = new Padding(3, 2, 3, 2);
+            button_Remove.Name = "button_Remove";
+            button_Remove.Size = new Size(82, 22);
+            button_Remove.TabIndex = 0;
+            button_Remove.Text = "Remove";
+            button_Remove.UseVisualStyleBackColor = true;
+            button_Remove.Click += button1_Click;
             // 
-            // textBox1
+            // button_Add
             // 
-            textBox1.Location = new Point(272, 202);
-            textBox1.Margin = new Padding(3, 2, 3, 2);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
-            textBox1.Size = new Size(198, 122);
-            textBox1.TabIndex = 4;
+            button_Add.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button_Add.Location = new Point(9, 187);
+            button_Add.Margin = new Padding(3, 2, 3, 2);
+            button_Add.Name = "button_Add";
+            button_Add.Size = new Size(82, 22);
+            button_Add.TabIndex = 1;
+            button_Add.Text = "Add New";
+            button_Add.UseVisualStyleBackColor = true;
+            button_Add.Click += button2_Click;
+            // 
+            // button_Solve
+            // 
+            button_Solve.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            button_Solve.Location = new Point(9, 288);
+            button_Solve.Margin = new Padding(3, 2, 3, 2);
+            button_Solve.Name = "button_Solve";
+            button_Solve.Size = new Size(82, 22);
+            button_Solve.TabIndex = 3;
+            button_Solve.Text = "Solve!";
+            button_Solve.UseVisualStyleBackColor = true;
+            button_Solve.Click += button_Solve_Click;
+            // 
+            // textBox_Result
+            // 
+            textBox_Result.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            textBox_Result.Location = new Point(272, 202);
+            textBox_Result.Margin = new Padding(3, 2, 3, 2);
+            textBox_Result.Multiline = true;
+            textBox_Result.Name = "textBox_Result";
+            textBox_Result.ReadOnly = true;
+            textBox_Result.Size = new Size(198, 122);
+            textBox_Result.TabIndex = 4;
             // 
             // label1
             // 
+            label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label1.AutoSize = true;
             label1.Location = new Point(353, 185);
             label1.Name = "label1";
@@ -208,6 +222,7 @@
             // 
             // tableLayoutPanel1
             // 
+            tableLayoutPanel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel1.ColumnCount = 7;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.28572F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857151F));
@@ -264,275 +279,275 @@
             tableLayoutPanel1.Controls.Add(label12, 0, 4);
             tableLayoutPanel1.Controls.Add(label13, 0, 5);
             tableLayoutPanel1.Controls.Add(label14, 0, 6);
-            tableLayoutPanel1.Location = new Point(269, 30);
+            tableLayoutPanel1.Location = new Point(212, 22);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 7;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 13.4615383F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.7435894F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857151F));
-            tableLayoutPanel1.Size = new Size(275, 148);
+            tableLayoutPanel1.Size = new Size(332, 156);
             tableLayoutPanel1.TabIndex = 6;
             // 
             // numericUpDown1_6
             // 
-            numericUpDown1_6.Location = new Point(242, 24);
+            numericUpDown1_6.Location = new Point(291, 25);
             numericUpDown1_6.Name = "numericUpDown1_6";
-            numericUpDown1_6.Size = new Size(30, 23);
+            numericUpDown1_6.Size = new Size(38, 23);
             numericUpDown1_6.TabIndex = 12;
             // 
             // numericUpDown1_5
             // 
-            numericUpDown1_5.Location = new Point(198, 24);
+            numericUpDown1_5.Location = new Point(238, 25);
             numericUpDown1_5.Name = "numericUpDown1_5";
-            numericUpDown1_5.Size = new Size(30, 23);
+            numericUpDown1_5.Size = new Size(47, 23);
             numericUpDown1_5.TabIndex = 11;
             // 
             // numericUpDown1_4
             // 
-            numericUpDown1_4.Location = new Point(159, 24);
+            numericUpDown1_4.Location = new Point(191, 25);
             numericUpDown1_4.Name = "numericUpDown1_4";
-            numericUpDown1_4.Size = new Size(30, 23);
+            numericUpDown1_4.Size = new Size(41, 23);
             numericUpDown1_4.TabIndex = 10;
             // 
             // numericUpDown1_3
             // 
-            numericUpDown1_3.Location = new Point(120, 24);
+            numericUpDown1_3.Location = new Point(144, 25);
             numericUpDown1_3.Name = "numericUpDown1_3";
-            numericUpDown1_3.Size = new Size(30, 23);
+            numericUpDown1_3.Size = new Size(41, 23);
             numericUpDown1_3.TabIndex = 9;
             // 
             // numericUpDown1_2
             // 
-            numericUpDown1_2.Location = new Point(81, 24);
+            numericUpDown1_2.Location = new Point(97, 25);
             numericUpDown1_2.Name = "numericUpDown1_2";
-            numericUpDown1_2.Size = new Size(30, 23);
+            numericUpDown1_2.Size = new Size(41, 23);
             numericUpDown1_2.TabIndex = 8;
             // 
             // numericUpDown1_1
             // 
-            numericUpDown1_1.Location = new Point(42, 24);
+            numericUpDown1_1.Location = new Point(50, 25);
             numericUpDown1_1.Name = "numericUpDown1_1";
-            numericUpDown1_1.Size = new Size(30, 23);
+            numericUpDown1_1.Size = new Size(41, 23);
             numericUpDown1_1.TabIndex = 7;
             // 
             // numericUpDown2_6
             // 
-            numericUpDown2_6.Location = new Point(242, 45);
+            numericUpDown2_6.Location = new Point(291, 46);
             numericUpDown2_6.Name = "numericUpDown2_6";
-            numericUpDown2_6.Size = new Size(30, 23);
+            numericUpDown2_6.Size = new Size(38, 23);
             numericUpDown2_6.TabIndex = 18;
             // 
             // numericUpDown2_5
             // 
-            numericUpDown2_5.Location = new Point(198, 45);
+            numericUpDown2_5.Location = new Point(238, 46);
             numericUpDown2_5.Name = "numericUpDown2_5";
-            numericUpDown2_5.Size = new Size(30, 23);
+            numericUpDown2_5.Size = new Size(47, 23);
             numericUpDown2_5.TabIndex = 17;
             // 
             // numericUpDown2_4
             // 
-            numericUpDown2_4.Location = new Point(159, 45);
+            numericUpDown2_4.Location = new Point(191, 46);
             numericUpDown2_4.Name = "numericUpDown2_4";
-            numericUpDown2_4.Size = new Size(30, 23);
+            numericUpDown2_4.Size = new Size(41, 23);
             numericUpDown2_4.TabIndex = 16;
             // 
             // numericUpDown2_3
             // 
-            numericUpDown2_3.Location = new Point(120, 45);
+            numericUpDown2_3.Location = new Point(144, 46);
             numericUpDown2_3.Name = "numericUpDown2_3";
-            numericUpDown2_3.Size = new Size(30, 23);
+            numericUpDown2_3.Size = new Size(41, 23);
             numericUpDown2_3.TabIndex = 15;
             // 
             // numericUpDown2_2
             // 
-            numericUpDown2_2.Location = new Point(81, 45);
+            numericUpDown2_2.Location = new Point(97, 46);
             numericUpDown2_2.Name = "numericUpDown2_2";
-            numericUpDown2_2.Size = new Size(30, 23);
+            numericUpDown2_2.Size = new Size(41, 23);
             numericUpDown2_2.TabIndex = 14;
             // 
             // numericUpDown2_1
             // 
-            numericUpDown2_1.Location = new Point(42, 45);
+            numericUpDown2_1.Location = new Point(50, 46);
             numericUpDown2_1.Name = "numericUpDown2_1";
-            numericUpDown2_1.Size = new Size(30, 23);
+            numericUpDown2_1.Size = new Size(41, 23);
             numericUpDown2_1.TabIndex = 13;
             // 
             // numericUpDown3_6
             // 
-            numericUpDown3_6.Location = new Point(242, 66);
+            numericUpDown3_6.Location = new Point(291, 69);
             numericUpDown3_6.Name = "numericUpDown3_6";
-            numericUpDown3_6.Size = new Size(30, 23);
+            numericUpDown3_6.Size = new Size(38, 23);
             numericUpDown3_6.TabIndex = 24;
             // 
             // numericUpDown3_5
             // 
-            numericUpDown3_5.Location = new Point(198, 66);
+            numericUpDown3_5.Location = new Point(238, 69);
             numericUpDown3_5.Name = "numericUpDown3_5";
-            numericUpDown3_5.Size = new Size(30, 23);
+            numericUpDown3_5.Size = new Size(47, 23);
             numericUpDown3_5.TabIndex = 23;
             // 
             // numericUpDown3_4
             // 
-            numericUpDown3_4.Location = new Point(159, 66);
+            numericUpDown3_4.Location = new Point(191, 69);
             numericUpDown3_4.Name = "numericUpDown3_4";
-            numericUpDown3_4.Size = new Size(30, 23);
+            numericUpDown3_4.Size = new Size(41, 23);
             numericUpDown3_4.TabIndex = 22;
             // 
             // numericUpDown3_3
             // 
-            numericUpDown3_3.Location = new Point(120, 66);
+            numericUpDown3_3.Location = new Point(144, 69);
             numericUpDown3_3.Name = "numericUpDown3_3";
-            numericUpDown3_3.Size = new Size(30, 23);
+            numericUpDown3_3.Size = new Size(41, 23);
             numericUpDown3_3.TabIndex = 21;
             // 
             // numericUpDown3_2
             // 
-            numericUpDown3_2.Location = new Point(81, 66);
+            numericUpDown3_2.Location = new Point(97, 69);
             numericUpDown3_2.Name = "numericUpDown3_2";
-            numericUpDown3_2.Size = new Size(30, 23);
+            numericUpDown3_2.Size = new Size(41, 23);
             numericUpDown3_2.TabIndex = 20;
             // 
             // numericUpDown3_1
             // 
-            numericUpDown3_1.Location = new Point(42, 66);
+            numericUpDown3_1.Location = new Point(50, 69);
             numericUpDown3_1.Name = "numericUpDown3_1";
-            numericUpDown3_1.Size = new Size(30, 23);
+            numericUpDown3_1.Size = new Size(41, 23);
             numericUpDown3_1.TabIndex = 19;
             // 
             // numericUpDown4_6
             // 
-            numericUpDown4_6.Location = new Point(242, 87);
+            numericUpDown4_6.Location = new Point(291, 91);
             numericUpDown4_6.Name = "numericUpDown4_6";
-            numericUpDown4_6.Size = new Size(30, 23);
+            numericUpDown4_6.Size = new Size(38, 23);
             numericUpDown4_6.TabIndex = 30;
             // 
             // numericUpDown4_5
             // 
-            numericUpDown4_5.Location = new Point(198, 87);
+            numericUpDown4_5.Location = new Point(238, 91);
             numericUpDown4_5.Name = "numericUpDown4_5";
-            numericUpDown4_5.Size = new Size(30, 23);
+            numericUpDown4_5.Size = new Size(47, 23);
             numericUpDown4_5.TabIndex = 29;
             // 
             // numericUpDown4_4
             // 
-            numericUpDown4_4.Location = new Point(159, 87);
+            numericUpDown4_4.Location = new Point(191, 91);
             numericUpDown4_4.Name = "numericUpDown4_4";
-            numericUpDown4_4.Size = new Size(30, 23);
+            numericUpDown4_4.Size = new Size(41, 23);
             numericUpDown4_4.TabIndex = 28;
             // 
             // numericUpDown4_3
             // 
-            numericUpDown4_3.Location = new Point(120, 87);
+            numericUpDown4_3.Location = new Point(144, 91);
             numericUpDown4_3.Name = "numericUpDown4_3";
-            numericUpDown4_3.Size = new Size(30, 23);
+            numericUpDown4_3.Size = new Size(41, 23);
             numericUpDown4_3.TabIndex = 27;
             // 
             // numericUpDown4_2
             // 
-            numericUpDown4_2.Location = new Point(81, 87);
+            numericUpDown4_2.Location = new Point(97, 91);
             numericUpDown4_2.Name = "numericUpDown4_2";
-            numericUpDown4_2.Size = new Size(30, 23);
+            numericUpDown4_2.Size = new Size(41, 23);
             numericUpDown4_2.TabIndex = 26;
             // 
             // numericUpDown4_1
             // 
-            numericUpDown4_1.Location = new Point(42, 87);
+            numericUpDown4_1.Location = new Point(50, 91);
             numericUpDown4_1.Name = "numericUpDown4_1";
-            numericUpDown4_1.Size = new Size(30, 23);
+            numericUpDown4_1.Size = new Size(41, 23);
             numericUpDown4_1.TabIndex = 25;
             // 
             // numericUpDown5_6
             // 
-            numericUpDown5_6.Location = new Point(242, 108);
+            numericUpDown5_6.Location = new Point(291, 113);
             numericUpDown5_6.Name = "numericUpDown5_6";
-            numericUpDown5_6.Size = new Size(30, 23);
+            numericUpDown5_6.Size = new Size(38, 23);
             numericUpDown5_6.TabIndex = 36;
             // 
             // numericUpDown5_5
             // 
-            numericUpDown5_5.Location = new Point(198, 108);
+            numericUpDown5_5.Location = new Point(238, 113);
             numericUpDown5_5.Name = "numericUpDown5_5";
-            numericUpDown5_5.Size = new Size(30, 23);
+            numericUpDown5_5.Size = new Size(47, 23);
             numericUpDown5_5.TabIndex = 35;
             // 
             // numericUpDown5_4
             // 
-            numericUpDown5_4.Location = new Point(159, 108);
+            numericUpDown5_4.Location = new Point(191, 113);
             numericUpDown5_4.Name = "numericUpDown5_4";
-            numericUpDown5_4.Size = new Size(30, 23);
+            numericUpDown5_4.Size = new Size(41, 23);
             numericUpDown5_4.TabIndex = 34;
             // 
             // numericUpDown5_3
             // 
-            numericUpDown5_3.Location = new Point(120, 108);
+            numericUpDown5_3.Location = new Point(144, 113);
             numericUpDown5_3.Name = "numericUpDown5_3";
-            numericUpDown5_3.Size = new Size(30, 23);
+            numericUpDown5_3.Size = new Size(41, 23);
             numericUpDown5_3.TabIndex = 33;
             // 
             // numericUpDown5_2
             // 
-            numericUpDown5_2.Location = new Point(81, 108);
+            numericUpDown5_2.Location = new Point(97, 113);
             numericUpDown5_2.Name = "numericUpDown5_2";
-            numericUpDown5_2.Size = new Size(30, 23);
+            numericUpDown5_2.Size = new Size(41, 23);
             numericUpDown5_2.TabIndex = 32;
             // 
             // numericUpDown5_1
             // 
-            numericUpDown5_1.Location = new Point(42, 108);
+            numericUpDown5_1.Location = new Point(50, 113);
             numericUpDown5_1.Name = "numericUpDown5_1";
-            numericUpDown5_1.Size = new Size(30, 23);
+            numericUpDown5_1.Size = new Size(41, 23);
             numericUpDown5_1.TabIndex = 31;
             // 
             // numericUpDown6_6
             // 
-            numericUpDown6_6.Location = new Point(242, 129);
+            numericUpDown6_6.Location = new Point(291, 135);
             numericUpDown6_6.Name = "numericUpDown6_6";
-            numericUpDown6_6.Size = new Size(30, 23);
+            numericUpDown6_6.Size = new Size(38, 23);
             numericUpDown6_6.TabIndex = 42;
             // 
             // numericUpDown6_5
             // 
-            numericUpDown6_5.Location = new Point(198, 129);
+            numericUpDown6_5.Location = new Point(238, 135);
             numericUpDown6_5.Name = "numericUpDown6_5";
-            numericUpDown6_5.Size = new Size(30, 23);
+            numericUpDown6_5.Size = new Size(47, 23);
             numericUpDown6_5.TabIndex = 41;
             // 
             // numericUpDown6_4
             // 
-            numericUpDown6_4.Location = new Point(159, 129);
+            numericUpDown6_4.Location = new Point(191, 135);
             numericUpDown6_4.Name = "numericUpDown6_4";
-            numericUpDown6_4.Size = new Size(30, 23);
+            numericUpDown6_4.Size = new Size(41, 23);
             numericUpDown6_4.TabIndex = 40;
             // 
             // numericUpDown6_3
             // 
-            numericUpDown6_3.Location = new Point(120, 129);
+            numericUpDown6_3.Location = new Point(144, 135);
             numericUpDown6_3.Name = "numericUpDown6_3";
-            numericUpDown6_3.Size = new Size(30, 23);
+            numericUpDown6_3.Size = new Size(41, 23);
             numericUpDown6_3.TabIndex = 39;
             // 
             // numericUpDown6_2
             // 
-            numericUpDown6_2.Location = new Point(81, 129);
+            numericUpDown6_2.Location = new Point(97, 135);
             numericUpDown6_2.Name = "numericUpDown6_2";
-            numericUpDown6_2.Size = new Size(30, 23);
+            numericUpDown6_2.Size = new Size(41, 23);
             numericUpDown6_2.TabIndex = 38;
             // 
             // numericUpDown6_1
             // 
-            numericUpDown6_1.Location = new Point(42, 129);
+            numericUpDown6_1.Location = new Point(50, 135);
             numericUpDown6_1.Name = "numericUpDown6_1";
-            numericUpDown6_1.Size = new Size(30, 23);
+            numericUpDown6_1.Size = new Size(41, 23);
             numericUpDown6_1.TabIndex = 37;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(42, 0);
+            label3.Location = new Point(50, 0);
             label3.Name = "label3";
             label3.Size = new Size(13, 15);
             label3.TabIndex = 43;
@@ -541,7 +556,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(81, 0);
+            label4.Location = new Point(97, 0);
             label4.Name = "label4";
             label4.Size = new Size(13, 15);
             label4.TabIndex = 44;
@@ -550,7 +565,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(120, 0);
+            label5.Location = new Point(144, 0);
             label5.Name = "label5";
             label5.Size = new Size(13, 15);
             label5.TabIndex = 45;
@@ -559,7 +574,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(159, 0);
+            label6.Location = new Point(191, 0);
             label6.Name = "label6";
             label6.Size = new Size(13, 15);
             label6.TabIndex = 46;
@@ -568,7 +583,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(198, 0);
+            label7.Location = new Point(238, 0);
             label7.Name = "label7";
             label7.Size = new Size(13, 15);
             label7.TabIndex = 47;
@@ -577,7 +592,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(242, 0);
+            label8.Location = new Point(291, 0);
             label8.Name = "label8";
             label8.Size = new Size(13, 15);
             label8.TabIndex = 48;
@@ -586,7 +601,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(3, 21);
+            label9.Location = new Point(3, 22);
             label9.Name = "label9";
             label9.Size = new Size(13, 15);
             label9.TabIndex = 49;
@@ -595,7 +610,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(3, 42);
+            label10.Location = new Point(3, 43);
             label10.Name = "label10";
             label10.Size = new Size(13, 15);
             label10.TabIndex = 50;
@@ -604,7 +619,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(3, 63);
+            label11.Location = new Point(3, 66);
             label11.Name = "label11";
             label11.Size = new Size(13, 15);
             label11.TabIndex = 51;
@@ -613,7 +628,7 @@
             // label12
             // 
             label12.AutoSize = true;
-            label12.Location = new Point(3, 84);
+            label12.Location = new Point(3, 88);
             label12.Name = "label12";
             label12.Size = new Size(13, 15);
             label12.TabIndex = 52;
@@ -622,7 +637,7 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(3, 105);
+            label13.Location = new Point(3, 110);
             label13.Name = "label13";
             label13.Size = new Size(13, 15);
             label13.TabIndex = 53;
@@ -631,7 +646,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(3, 126);
+            label14.Location = new Point(3, 132);
             label14.Name = "label14";
             label14.Size = new Size(13, 15);
             label14.TabIndex = 54;
@@ -639,8 +654,9 @@
             // 
             // label2
             // 
+            label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
-            label2.Location = new Point(353, 4);
+            label2.Location = new Point(322, 4);
             label2.Name = "label2";
             label2.Size = new Size(111, 15);
             label2.TabIndex = 7;
@@ -648,6 +664,7 @@
             // 
             // Limit_Gscore
             // 
+            Limit_Gscore.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             Limit_Gscore.AutoSize = true;
             Limit_Gscore.Location = new Point(96, 263);
             Limit_Gscore.Name = "Limit_Gscore";
@@ -656,30 +673,45 @@
             Limit_Gscore.Text = "Limit Steps:";
             Limit_Gscore.Click += Limit_Gscore_Click;
             // 
-            // numericUpDown1
+            // Limit_Steps
             // 
-            numericUpDown1.Location = new Point(97, 287);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(81, 23);
-            numericUpDown1.TabIndex = 9;
-            numericUpDown1.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            Limit_Steps.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            Limit_Steps.Location = new Point(97, 287);
+            Limit_Steps.Name = "Limit_Steps";
+            Limit_Steps.Size = new Size(81, 23);
+            Limit_Steps.TabIndex = 9;
+            Limit_Steps.Value = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            // button_Reset
+            // 
+            button_Reset.Location = new Point(476, 202);
+            button_Reset.Name = "button_Reset";
+            button_Reset.Size = new Size(75, 23);
+            button_Reset.TabIndex = 10;
+            button_Reset.Text = "Reset ALL!";
+            button_Reset.UseVisualStyleBackColor = true;
+            button_Reset.Click += button_Reset_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(555, 338);
-            Controls.Add(numericUpDown1);
+            Controls.Add(button_Reset);
+            Controls.Add(Limit_Steps);
             Controls.Add(Limit_Gscore);
             Controls.Add(label2);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(label1);
-            Controls.Add(textBox1);
-            Controls.Add(button3);
+            Controls.Add(textBox_Result);
+            Controls.Add(button_Solve);
             Controls.Add(TableView);
-            Controls.Add(button2);
-            Controls.Add(button1);
+            Controls.Add(button_Add);
+            Controls.Add(button_Remove);
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
+            MaximumSize = new Size(571, 377);
+            MinimumSize = new Size(571, 377);
             Name = "Form1";
             Text = "GothicLockPicker By Tutek";
             Load += Form1_Load;
@@ -722,21 +754,19 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Limit_Steps).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
-        private Button button2;
+        private Button button_Remove;
+        private Button button_Add;
         private DataGridView TableView;
-        private Button button3;
-        private TextBox textBox1;
+        private Button button_Solve;
+        private TextBox textBox_Result;
         private Label label1;
-        private DataGridViewTextBoxColumn Position;
-        private DataGridViewComboBoxColumn ValueLock;
         private TableLayoutPanel tableLayoutPanel1;
         private NumericUpDown numericUpDown1_1;
         private NumericUpDown numericUpDown1_2;
@@ -788,6 +818,9 @@
         private Label label13;
         private Label label14;
         private Label Limit_Gscore;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown Limit_Steps;
+        private DataGridViewTextBoxColumn Position;
+        private DataGridViewComboBoxColumn ValueLock;
+        private Button button_Reset;
     }
 }
