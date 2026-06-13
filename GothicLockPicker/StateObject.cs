@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using System.Text;
 
 namespace GothicLockPicker
@@ -42,6 +43,14 @@ namespace GothicLockPicker
         {
             this._value = value;
             Connections = connections;
+        }
+        public static bool operator>(Lock lock1, Lock lock2)
+        {
+            return lock1.Value > lock2.Value;
+        }
+        public static bool operator <(Lock lock1, Lock lock2)
+        {
+            return lock1.Value < lock2.Value;
         }
     }
 }
