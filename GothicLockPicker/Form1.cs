@@ -5,7 +5,7 @@ namespace GothicLockPicker
 
     public partial class Form1 : Form
     {
-        public BindingList<LockRow> lockRows = new BindingList<LockRow> { new(1, 2), new(2, 2) };
+        public BindingList<LockRow> lockRows = new BindingList<LockRow> { new(0, 2), new(1, 2) };
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +35,7 @@ namespace GothicLockPicker
         {
             if (lockRows.Count()<7)
             {
-                lockRows.Add(new(lockRows.Count()+1, 4));
+                lockRows.Add(new(lockRows.Count(), 4));
             }
 
             Console.WriteLine("test");
@@ -44,23 +44,22 @@ namespace GothicLockPicker
         private void button_Solve_Click(object sender, EventArgs e)
         {
             //Solve!
-            MessageBox.Show("Not implemented yet!");
             //Convert Data From Matrix View to 2D Array
             int[,] MatrixConnections = new int[7, 7];
-            for (int i = 0; i < 7; i++)
+            for (int i = 1; i < 7; i++)
             {
-                for(int j = 0; j < 7; j++)
+                for(int j = 1; j < 7; j++)
                 {
                     var control = this.Controls.Find($"numericUpDown{i}_{j}", true);
                     if (control.Length > 0 && control[0] is NumericUpDown nud)
                     {
-                        MatrixConnections[i, j] = (int)nud.Value;
+                        MatrixConnections[i-1, j-1] = (int)nud.Value;
                     }
                 }
 
             }
-                
-            Console.WriteLine("test");
+            string ResultFind = AstarFinder.GetResolve(MatrixConnections, lockRows, (int)Limit_Steps.Value);
+            textBox_Result.Text = ResultFind;
 
         }
 
@@ -79,11 +78,18 @@ namespace GothicLockPicker
                 }
 
             }
+            //Fix the positions of the remaining rows
+            for(int i = 0; i < lockRows.Count; i++)
+            {
+                lockRows[i].Position = i;
+            }
         }
 
         private void button_Reset_Click(object sender, EventArgs e)
         {
-            lockRows = new BindingList<LockRow> { new(1, 2), new(2, 2) };
+            lockRows.Clear();
+            lockRows.Add(new(0, 2));
+            lockRows.Add(new(1, 2));
             for (int i = 1; i <= 7; i++)
             {
                 for (int j = 1; j <= 7; j++)

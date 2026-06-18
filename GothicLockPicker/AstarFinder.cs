@@ -11,14 +11,15 @@ namespace GothicLockPicker
 
         public int GCost = 0;
         public int FCost = 0;
-        public int[] Graphvalue = new int[7];
+        public List<int> Graphvalue = new List<int>();
+
         public Tuple<int, int> MoveParent = Tuple.Create(0, 0);
         public Node? Parent = null;
-        public Node(int[] graphValue)
+        public Node(List<int> graphValue)
         {
             this.Graphvalue = graphValue;
         }
-        public Node(int[] graphValue, Tuple<int, int> moveParent, Node? parent)
+        public Node(List<int> graphValue, Tuple<int, int> moveParent, Node? parent)
         {
             this.Graphvalue = graphValue;
             this.MoveParent = moveParent;
@@ -27,7 +28,14 @@ namespace GothicLockPicker
         public Node(BindingList<LockRow> lockRows) //Conversion
         {
             //Sort by Position to ensure the order is correct
-            
+            this.Graphvalue.EnsureCapacity(lockRows.Count()+1);
+            int MaxPosition = lockRows.Max(row => row.Position);
+            // Initialize all elements to zero
+            for (int i = 0; i <= MaxPosition; i++)
+            {
+                this.Graphvalue.Add(0);
+            }
+
             for (int i = 0; i < lockRows.Count; i++) {
                 this.Graphvalue[lockRows[i].Position] = lockRows[i].ValueLock;
             }
@@ -35,7 +43,7 @@ namespace GothicLockPicker
 
 
         }
-        public Node(int[] graphValue, Tuple<int, int> moveParent, Node? parent, int gCost, int fCost)
+        public Node(List<int> graphValue, Tuple<int, int> moveParent, Node? parent, int gCost, int fCost)
         {
             this.Graphvalue = graphValue;
             this.MoveParent = moveParent;
@@ -45,7 +53,7 @@ namespace GothicLockPicker
         }
         public object Clone()
         {
-            return new Node((int[])this.Graphvalue.Clone(), this.MoveParent, this.Parent, this.GCost,this.FCost);
+            return new Node(new List<int>(this.Graphvalue), this.MoveParent, this.Parent, this.GCost,this.FCost);
         }
         public int CompareTo(object? obj)
         {
@@ -59,7 +67,6 @@ namespace GothicLockPicker
                 throw new ArgumentException("Object is not a Node");
             }
         }
-        //Overide Equals and GetHashCode to compare nodes based on their Graphvalue
 
     }
     internal class AstarFinder
@@ -67,15 +74,24 @@ namespace GothicLockPicker
         public static int GetHeuristic(Node Current)
         {
             int result = 0;
-            for(int i = 0; i < Current.Graphvalue.Length; i++)
+            for(int i = 0; i < Current.Graphvalue.Count(); i++)
             {
-                result += Math.Abs(Current.Graphvalue[i] - 4);
+                result += Math.Abs(Current.Graphvalue[i] - 4); // Distance to middle Position
             }
             return result;
         }
-        static private string getRoadHumanReadable(Node CurrNode)
+        static private string getRoadHumanReadable(Node? CurrNode)
         {
-            return "Not Implemented yet";
+            List<string> result = new List<string>();
+            while (CurrNode != null && CurrNode?.Parent!=null) {
+                string WayToMove = CurrNode?.MoveParent.Item2 == 1 ? "Right" : "Left"; 
+                result.Add($"Move Lock {CurrNode?.MoveParent.Item1} by {WayToMove}");
+                CurrNode = CurrNode?.Parent;
+
+            }
+            //Reverse Stringh
+            result.Reverse();
+            return string.Join("\r\n", result);
         }
 
         //we have to get new node or bool multi type something?
@@ -88,25 +104,29 @@ namespace GothicLockPicker
 
             int NewValue = CopyNode.Graphvalue[index] + move;
 
-            bool OverFlow = NewValue >= 0 && NewValue <= 8;
+            bool OverFlow = NewValue <= 0 && NewValue >= 7;
             if (OverFlow)
             {
-                return null; //it is illegal move, because value must be between 0 and 8
+                return null; //it is illegal move, because value must be between 0 and 7
             }
-            //Now Check in Matrix if move is possible
-            for(int i = 0; i < matrixConnection.GetLength(0); i++)
+            //Now Check in MatrixConnections if move is possible
+            for(int i = 0; i < CurrNode.Graphvalue.Count(); i++)
             {
                 if (matrixConnection[index, i] != 0) //if it isnt 0, it means that there is a connection between index and i
                 {
+                    if(i == index) continue; //we don't want to check the same lock
+
                     int ConnectionValue = CurrNode.Graphvalue[i];
                     ConnectionValue += matrixConnection[index, i];
-                    if (ConnectionValue < 0 || ConnectionValue > 8)
+                    if (ConnectionValue < 0 || ConnectionValue >= 7)
                     {
-                        return null; //it is illegal move, because value must be between 0 and 8
+                        return null; //it is illegal move, because value must be between 0 and 7
                     }
                     CopyNode.Graphvalue[i] = ConnectionValue;
                 }
+
             }
+            CopyNode.Graphvalue[index] = NewValue;
             CopyNode.MoveParent = Tuple.Create(index, move);
             return CopyNode;
         }
@@ -121,9 +141,9 @@ namespace GothicLockPicker
         static private List<Node> GetNeighbours(Node CurrNode, int[,] matrix)
         {
             List<Node> neighbours = new List<Node>();
-            //Mamy 3 mozliwe ruchy +1,0,-1 dla kazdego plate
+            //2 moves every plate L or R
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < CurrNode.Graphvalue.Count(); i++)
             {
                 for(int j=-1;j<=1; j++)
                 {
@@ -138,16 +158,43 @@ namespace GothicLockPicker
             return neighbours;
         }
         
-        public static string GetResolve(int[,] matrix, BindingList<LockRow> lockRows)
+        public static string GetResolve(int[,] matrix, BindingList<LockRow> lockRows, int limitCost)
         {
             //1.st convert lockRows to List<Node>Graph
             Node StartPoint = new Node(lockRows);
-            List<Node> OpenSet = new List<Node>(); //Change to PriorityQueue if needed
-            List<Node> ClosedSet = new List<Node>();
-            OpenSet.Add(StartPoint);
-            
-            //TODO: Implement A* algorithm to find the optimal solution for the lock picking problem
-            return "Not implemented yet!";
+            PriorityQueue<Node, int> OpenSet = new PriorityQueue<Node, int>();
+            HashSet<string> visited = new HashSet<string>();
+
+            OpenSet.Enqueue(StartPoint, GetHeuristic(StartPoint));
+            while (OpenSet.Count > 0)
+            {
+                Node CurrentNode = OpenSet.Dequeue();
+                if (CurrentNode.GCost >= limitCost)
+                {
+                    return "FAILED TO FIND SOLUTION, COST LIMIT REACHED";
+                }
+                if (IsGoal(CurrentNode))
+                {
+                    //We have reached the goal, now we have to get the path from the start to the goal
+                    return getRoadHumanReadable(CurrentNode);
+                }
+                visited.Add(string.Join(",", CurrentNode.Graphvalue));
+                List<Node> Neighbours = GetNeighbours(CurrentNode, matrix);
+                foreach(Node Neighbour in Neighbours)
+                {
+                    if(visited.Contains(string.Join(",", Neighbour.Graphvalue)))
+                    {
+                        continue; //if we have already visited this node, we don't need to add it to the open set
+                    }
+                    Neighbour.GCost = CurrentNode.GCost + 1; //each move costs 1
+                    Neighbour.FCost = Neighbour.GCost + GetHeuristic(Neighbour);
+                    Neighbour.Parent = CurrentNode;
+
+                    OpenSet.Enqueue(Neighbour, Neighbour.FCost);
+                }
+
+            }
+            return "FAILED TO FIND SOLUTION";
         }
 
     }

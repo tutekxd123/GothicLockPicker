@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             TableView = new DataGridView();
             Position = new DataGridViewTextBoxColumn();
             ValueLock = new DataGridViewComboBoxColumn();
@@ -236,6 +237,7 @@
             textBox_Result.Multiline = true;
             textBox_Result.Name = "textBox_Result";
             textBox_Result.ReadOnly = true;
+            textBox_Result.ScrollBars = ScrollBars.Vertical;
             textBox_Result.Size = new Size(198, 122);
             textBox_Result.TabIndex = 4;
             // 
@@ -395,10 +397,12 @@
             // 
             // numericUpDown1_1
             // 
+            numericUpDown1_1.Enabled = false;
             numericUpDown1_1.Location = new Point(45, 24);
             numericUpDown1_1.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown1_1.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown1_1.Name = "numericUpDown1_1";
+            numericUpDown1_1.ReadOnly = true;
             numericUpDown1_1.Size = new Size(36, 23);
             numericUpDown1_1.TabIndex = 7;
             // 
@@ -440,10 +444,12 @@
             // 
             // numericUpDown2_2
             // 
+            numericUpDown2_2.Enabled = false;
             numericUpDown2_2.Location = new Point(87, 45);
             numericUpDown2_2.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown2_2.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown2_2.Name = "numericUpDown2_2";
+            numericUpDown2_2.ReadOnly = true;
             numericUpDown2_2.Size = new Size(36, 23);
             numericUpDown2_2.TabIndex = 14;
             // 
@@ -485,10 +491,12 @@
             // 
             // numericUpDown3_3
             // 
+            numericUpDown3_3.Enabled = false;
             numericUpDown3_3.Location = new Point(129, 66);
             numericUpDown3_3.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown3_3.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown3_3.Name = "numericUpDown3_3";
+            numericUpDown3_3.ReadOnly = true;
             numericUpDown3_3.Size = new Size(36, 23);
             numericUpDown3_3.TabIndex = 21;
             // 
@@ -530,10 +538,12 @@
             // 
             // numericUpDown4_4
             // 
+            numericUpDown4_4.Enabled = false;
             numericUpDown4_4.Location = new Point(171, 87);
             numericUpDown4_4.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown4_4.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown4_4.Name = "numericUpDown4_4";
+            numericUpDown4_4.ReadOnly = true;
             numericUpDown4_4.Size = new Size(36, 23);
             numericUpDown4_4.TabIndex = 28;
             // 
@@ -575,10 +585,12 @@
             // 
             // numericUpDown5_5
             // 
+            numericUpDown5_5.Enabled = false;
             numericUpDown5_5.Location = new Point(213, 108);
             numericUpDown5_5.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown5_5.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown5_5.Name = "numericUpDown5_5";
+            numericUpDown5_5.ReadOnly = true;
             numericUpDown5_5.Size = new Size(36, 23);
             numericUpDown5_5.TabIndex = 35;
             // 
@@ -620,10 +632,12 @@
             // 
             // numericUpDown6_6
             // 
+            numericUpDown6_6.Enabled = false;
             numericUpDown6_6.Location = new Point(255, 129);
             numericUpDown6_6.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown6_6.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown6_6.Name = "numericUpDown6_6";
+            numericUpDown6_6.ReadOnly = true;
             numericUpDown6_6.Size = new Size(36, 23);
             numericUpDown6_6.TabIndex = 42;
             // 
@@ -882,10 +896,12 @@
             // 
             // numericUpDown7_7
             // 
+            numericUpDown7_7.Enabled = false;
             numericUpDown7_7.Location = new Point(297, 150);
             numericUpDown7_7.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
             numericUpDown7_7.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
             numericUpDown7_7.Name = "numericUpDown7_7";
+            numericUpDown7_7.ReadOnly = true;
             numericUpDown7_7.Size = new Size(39, 23);
             numericUpDown7_7.TabIndex = 67;
             // 
@@ -972,6 +988,7 @@
             Controls.Add(TableView);
             Controls.Add(button_Add);
             Controls.Add(button_Remove);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             MaximumSize = new Size(571, 377);
