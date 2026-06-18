@@ -33,7 +33,11 @@ namespace GothicLockPicker
 
         private void button2_Click(object sender, EventArgs e)
         {
-            lockRows.Add(new(lockRows.Count(), 4));
+            if (lockRows.Count()<7)
+            {
+                lockRows.Add(new(lockRows.Count()+1, 4));
+            }
+
             Console.WriteLine("test");
         }
 
@@ -41,6 +45,21 @@ namespace GothicLockPicker
         {
             //Solve!
             MessageBox.Show("Not implemented yet!");
+            //Convert Data From Matrix View to 2D Array
+            int[,] MatrixConnections = new int[7, 7];
+            for (int i = 0; i < 7; i++)
+            {
+                for(int j = 0; j < 7; j++)
+                {
+                    var control = this.Controls.Find($"numericUpDown{i}_{j}", true);
+                    if (control.Length > 0 && control[0] is NumericUpDown nud)
+                    {
+                        MatrixConnections[i, j] = (int)nud.Value;
+                    }
+                }
+
+            }
+                
             Console.WriteLine("test");
 
         }
@@ -83,7 +102,12 @@ namespace GothicLockPicker
             Limit_Steps.Value = 100;
 
 
-    }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
     public class LockRow
     {
