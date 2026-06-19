@@ -76,7 +76,7 @@ namespace GothicLockPicker
             int result = 0;
             for(int i = 0; i < Current.Graphvalue.Count(); i++)
             {
-                result += Math.Abs(Current.Graphvalue[i] - 4); // Distance to middle Position
+                result += Math.Abs(Current.Graphvalue[i] - 3); // Distance to middle Position
             }
             return result;
         }
@@ -117,7 +117,7 @@ namespace GothicLockPicker
                     if(i == index) continue; //we don't want to check the same lock
 
                     int ConnectionValue = CurrNode.Graphvalue[i];
-                    ConnectionValue += matrixConnection[index, i];
+                    ConnectionValue += (move*matrixConnection[index, i]);
                     if (ConnectionValue < 0 || ConnectionValue >= 7)
                     {
                         return null; //it is illegal move, because value must be between 0 and 7
@@ -134,7 +134,7 @@ namespace GothicLockPicker
         {
             foreach (int value in CurrNode.Graphvalue)
             {
-                if (value != 4) return false; //if all Locks are in the middle position, we have reached the goal   
+                if (value != 3) return false; //if all Locks are in the middle position, we have reached the goal   
             }
             return true;
         }
@@ -164,11 +164,13 @@ namespace GothicLockPicker
             Node StartPoint = new Node(lockRows);
             PriorityQueue<Node, int> OpenSet = new PriorityQueue<Node, int>();
             HashSet<string> visited = new HashSet<string>();
+            HashSet<string> inOpenSet = new HashSet<string>();
 
             OpenSet.Enqueue(StartPoint, GetHeuristic(StartPoint));
             while (OpenSet.Count > 0)
             {
                 Node CurrentNode = OpenSet.Dequeue();
+                inOpenSet.Remove(string.Join(",", CurrentNode.Graphvalue));
                 if (CurrentNode.GCost >= limitCost)
                 {
                     return "FAILED TO FIND SOLUTION, COST LIMIT REACHED";
@@ -182,7 +184,7 @@ namespace GothicLockPicker
                 List<Node> Neighbours = GetNeighbours(CurrentNode, matrix);
                 foreach(Node Neighbour in Neighbours)
                 {
-                    if(visited.Contains(string.Join(",", Neighbour.Graphvalue)))
+                    if(visited.Contains(string.Join(",", Neighbour.Graphvalue)) || inOpenSet.Contains(string.Join(",", Neighbour.Graphvalue))) //Or in OpenSet
                     {
                         continue; //if we have already visited this node, we don't need to add it to the open set
                     }
@@ -191,6 +193,7 @@ namespace GothicLockPicker
                     Neighbour.Parent = CurrentNode;
 
                     OpenSet.Enqueue(Neighbour, Neighbour.FCost);
+                    inOpenSet.Add(string.Join(",", Neighbour.Graphvalue));
                 }
 
             }

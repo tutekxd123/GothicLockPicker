@@ -14,7 +14,7 @@ namespace GothicLockPicker
             Position.DataPropertyName = "Position";
             ValueLock.DataPropertyName = "ValueLock";
             ValueLock.Items.Clear();
-            for (int i = 0; i <= 7; i++)
+            for (int i = 0; i < 7; i++)
                 ValueLock.Items.Add(i);
 
             TableView.DataSource = lockRows;
