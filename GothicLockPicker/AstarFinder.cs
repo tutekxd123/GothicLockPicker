@@ -104,7 +104,7 @@ namespace GothicLockPicker
 
             int NewValue = CopyNode.Graphvalue[index] + move;
 
-            bool OverFlow = NewValue <= 0 && NewValue >= 7;
+            bool OverFlow = NewValue <= 0 || NewValue >= 7;
             if (OverFlow)
             {
                 return null; //it is illegal move, because value must be between 0 and 7
@@ -175,6 +175,7 @@ namespace GothicLockPicker
                 {
                     return "FAILED TO FIND SOLUTION, COST LIMIT REACHED";
                 }
+
                 if (IsGoal(CurrentNode))
                 {
                     //We have reached the goal, now we have to get the path from the start to the goal
@@ -188,6 +189,15 @@ namespace GothicLockPicker
                     {
                         continue; //if we have already visited this node, we don't need to add it to the open set
                     }
+                    //Debug only
+                    for (int i = 0; i < Neighbour.Graphvalue.Count(); i++)
+                    {
+                        if (Neighbour.Graphvalue[i]>=7 || Neighbour.Graphvalue[i] < 0)
+                        {
+                            Console.WriteLine("DEBUG");
+                        }
+                    }
+                    
                     Neighbour.GCost = CurrentNode.GCost + 1; //each move costs 1
                     Neighbour.FCost = Neighbour.GCost + GetHeuristic(Neighbour);
                     Neighbour.Parent = CurrentNode;
