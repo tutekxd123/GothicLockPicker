@@ -84,8 +84,8 @@ namespace GothicLockPicker
         {
             List<string> result = new List<string>();
             while (CurrNode != null && CurrNode?.Parent!=null) {
-                string WayToMove = CurrNode?.MoveParent.Item2 == 1 ? "Right" : "Left"; 
-                result.Add($"Move Lock {CurrNode?.MoveParent.Item1} by {WayToMove}");
+                string WayToMove = CurrNode?.MoveParent.Item2 == 1 ? "Right(A)" : "Left(D)"; 
+                result.Add($"Move Lock {CurrNode?.MoveParent.Item1+1} by {WayToMove}");
                 CurrNode = CurrNode?.Parent;
 
             }
