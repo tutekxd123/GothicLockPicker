@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Numerics;
 using System.Text;
 
@@ -84,8 +85,9 @@ namespace GothicLockPicker
         {
             List<string> result = new List<string>();
             while (CurrNode != null && CurrNode?.Parent!=null) {
-                string WayToMove = CurrNode?.MoveParent.Item2 == 1 ? "Right(A)" : "Left(D)"; 
-                result.Add($"Move Lock {CurrNode?.MoveParent.Item1+1} by {WayToMove}");
+                string WayToMove = CurrNode?.MoveParent.Item2 == 1 ? "Right(A)" : "Left(D)";
+                string StatusAfter = "[" + string.Join(",", CurrNode.Graphvalue.Select(x => x + 1)) + "]";
+                result.Add($"Move Lock {CurrNode?.MoveParent.Item1+1} by {WayToMove} {StatusAfter}");
                 CurrNode = CurrNode?.Parent;
 
             }
@@ -104,7 +106,7 @@ namespace GothicLockPicker
 
             int NewValue = CopyNode.Graphvalue[index] + move;
 
-            bool OverFlow = NewValue <= 0 && NewValue >= 7;
+            bool OverFlow = NewValue < 0 || NewValue >= 7;
             if (OverFlow)
             {
                 return null; //it is illegal move, because value must be between 0 and 7
@@ -164,13 +166,15 @@ namespace GothicLockPicker
             Node StartPoint = new Node(lockRows);
             PriorityQueue<Node, int> OpenSet = new PriorityQueue<Node, int>();
             HashSet<string> visited = new HashSet<string>();
-            HashSet<string> inOpenSet = new HashSet<string>();
+            Dictionary<string, int> bestG = new();
+
 
             OpenSet.Enqueue(StartPoint, GetHeuristic(StartPoint));
+            bestG[string.Join(",", StartPoint.Graphvalue)] = 0;
             while (OpenSet.Count > 0)
             {
                 Node CurrentNode = OpenSet.Dequeue();
-                inOpenSet.Remove(string.Join(",", CurrentNode.Graphvalue));
+                
                 if (CurrentNode.GCost >= limitCost)
                 {
                     return "FAILED TO FIND SOLUTION, COST LIMIT REACHED";
@@ -184,16 +188,23 @@ namespace GothicLockPicker
                 List<Node> Neighbours = GetNeighbours(CurrentNode, matrix);
                 foreach(Node Neighbour in Neighbours)
                 {
-                    if(visited.Contains(string.Join(",", Neighbour.Graphvalue)) || inOpenSet.Contains(string.Join(",", Neighbour.Graphvalue))) //Or in OpenSet
+                    string keyNeigh = string.Join(",", Neighbour.Graphvalue);
+                    if (visited.Contains(keyNeigh)) //Or in OpenSet
                     {
                         continue; //if we have already visited this node, we don't need to add it to the open set
+                    }
+                    if (bestG.ContainsKey(keyNeigh))
+                    {
+                        if (bestG[keyNeigh] > CurrentNode.GCost)
+                        {
+                            continue;
+                        }
                     }
                     Neighbour.GCost = CurrentNode.GCost + 1; //each move costs 1
                     Neighbour.FCost = Neighbour.GCost + GetHeuristic(Neighbour);
                     Neighbour.Parent = CurrentNode;
-
                     OpenSet.Enqueue(Neighbour, Neighbour.FCost);
-                    inOpenSet.Add(string.Join(",", Neighbour.Graphvalue));
+                    
                 }
 
             }

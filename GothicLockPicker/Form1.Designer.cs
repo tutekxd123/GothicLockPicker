@@ -234,19 +234,19 @@
             // textBox_Result
             // 
             textBox_Result.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            textBox_Result.Location = new Point(311, 288);
+            textBox_Result.Location = new Point(334, 296);
             textBox_Result.Multiline = true;
             textBox_Result.Name = "textBox_Result";
             textBox_Result.ReadOnly = true;
             textBox_Result.ScrollBars = ScrollBars.Vertical;
-            textBox_Result.Size = new Size(226, 161);
+            textBox_Result.Size = new Size(292, 135);
             textBox_Result.TabIndex = 4;
             // 
             // label1
             // 
             label1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             label1.AutoSize = true;
-            label1.Location = new Point(405, 265);
+            label1.Location = new Point(437, 273);
             label1.Name = "label1";
             label1.Size = new Size(52, 20);
             label1.TabIndex = 5;
@@ -1006,7 +1006,7 @@
             // 
             // button_Reset
             // 
-            button_Reset.Location = new Point(544, 269);
+            button_Reset.Location = new Point(242, 265);
             button_Reset.Margin = new Padding(3, 4, 3, 4);
             button_Reset.Name = "button_Reset";
             button_Reset.Size = new Size(86, 31);
@@ -1019,7 +1019,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(632, 440);
+            ClientSize = new Size(632, 437);
             Controls.Add(button_Reset);
             Controls.Add(Limit_Steps);
             Controls.Add(Limit_Gscore);
@@ -1033,8 +1033,8 @@
             Controls.Add(button_Remove);
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(650, 487);
-            MinimumSize = new Size(650, 487);
+            MaximumSize = new Size(650, 484);
+            MinimumSize = new Size(650, 484);
             Name = "Form1";
             Text = "GothicLockPicker By Tutek";
             Load += Form1_Load;
