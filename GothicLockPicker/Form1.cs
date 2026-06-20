@@ -11,10 +11,11 @@ namespace GothicLockPicker
             InitializeComponent();
             TableView.AutoGenerateColumns = false;
 
-            Position.DataPropertyName = "Position";
-            ValueLock.DataPropertyName = "ValueLock";
+            //Position.DataPropertyName = "Position";
+            Position.DataPropertyName = "HumanPosition";
+            ValueLock.DataPropertyName = "HumanValue";
             ValueLock.Items.Clear();
-            for (int i = 0; i < 7; i++)
+            for (int i = 1; i < 8; i++)
                 ValueLock.Items.Add(i);
 
             TableView.DataSource = lockRows;
@@ -119,6 +120,29 @@ namespace GothicLockPicker
     {
         public int ValueLock { get; set; }
         public int Position { get; set; }
+
+        public int HumanValue
+        {
+            get
+            {
+                return ValueLock + 1;
+            }
+            set
+            {
+                ValueLock = value - 1;
+            }
+        }
+        public int HumanPosition
+        {
+            get
+            {
+                return Position+1;
+            }
+            set
+            {
+                Position= value-1;
+            }
+        }
         public LockRow(int ID, int Value)
         {
             this.Position = ID;
