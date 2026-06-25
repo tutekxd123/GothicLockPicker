@@ -15,7 +15,7 @@ The lock in the game requires set each plate at middle latch. The latch value is
 
 Each plate could have connections with other plates. Moving the plate could move another plate in the same direction or the opposite.
 
-#Usage the program
+# Usage the program
 
 In order to use the GothicLockPicker needs connections between plates and current states latches.
 Connection value:
