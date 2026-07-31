@@ -174,6 +174,27 @@ namespace GothicLockPicker
         {
 
         }
+
+        private void TableView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //pick up the selected row;
+            int numberTry = -1;
+            char key = e.KeyChar;
+            string keytest = e.KeyChar.ToString();
+            bool status = int.TryParse(keytest, out numberTry);
+            if(!status || numberTry<1 || numberTry>7)
+            {
+                return;
+            }
+            foreach (DataGridViewRow row in TableView.SelectedRows)
+            {
+                if (row.DataBoundItem!=null && row.DataBoundItem is LockRow lockRow)
+                {
+                    lockRow.ValueLock = numberTry - 1;
+                }
+            }
+            TableView.Invalidate();
+        }
     }
     public class LockRow
     {

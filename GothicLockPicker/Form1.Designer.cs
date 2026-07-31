@@ -184,6 +184,7 @@
             TableView.Size = new Size(207, 223);
             TableView.TabIndex = 2;
             TableView.CellContentClick += TableView_CellContentClick;
+            TableView.KeyPress += TableView_KeyPress;
             // 
             // Position
             // 
