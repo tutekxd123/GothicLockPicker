@@ -72,7 +72,6 @@
             numericUpDown6_6 = new NumericUpDown();
             numericUpDown6_5 = new NumericUpDown();
             numericUpDown6_4 = new NumericUpDown();
-            numericUpDown6_3 = new NumericUpDown();
             numericUpDown6_2 = new NumericUpDown();
             numericUpDown6_1 = new NumericUpDown();
             label3 = new Label();
@@ -101,10 +100,15 @@
             numericUpDown7_7 = new NumericUpDown();
             label15 = new Label();
             label16 = new Label();
+            numericUpDown6_3 = new NumericUpDown();
             label2 = new Label();
             Limit_Gscore = new Label();
             Limit_Steps = new NumericUpDown();
             button_Reset = new Button();
+            label10 = new Label();
+            label18 = new Label();
+            checkBox1_Optimalizer = new CheckBox();
+            checkBox1_HumanReadable = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)TableView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1_6).BeginInit();
@@ -140,7 +144,6 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1_7).BeginInit();
@@ -156,6 +159,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_7).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Limit_Steps).BeginInit();
             SuspendLayout();
             // 
@@ -244,7 +248,7 @@
             textBox_Result.Name = "textBox_Result";
             textBox_Result.ReadOnly = true;
             textBox_Result.ScrollBars = ScrollBars.Vertical;
-            textBox_Result.Size = new Size(256, 102);
+            textBox_Result.Size = new Size(256, 88);
             textBox_Result.TabIndex = 4;
             // 
             // label1
@@ -303,7 +307,6 @@
             tableLayoutPanel1.Controls.Add(numericUpDown6_6, 6, 6);
             tableLayoutPanel1.Controls.Add(numericUpDown6_5, 5, 6);
             tableLayoutPanel1.Controls.Add(numericUpDown6_4, 4, 6);
-            tableLayoutPanel1.Controls.Add(numericUpDown6_3, 3, 6);
             tableLayoutPanel1.Controls.Add(numericUpDown6_2, 2, 6);
             tableLayoutPanel1.Controls.Add(numericUpDown6_1, 1, 6);
             tableLayoutPanel1.Controls.Add(label3, 1, 0);
@@ -332,6 +335,7 @@
             tableLayoutPanel1.Controls.Add(numericUpDown7_7, 7, 7);
             tableLayoutPanel1.Controls.Add(label15, 7, 0);
             tableLayoutPanel1.Controls.Add(label16, 0, 2);
+            tableLayoutPanel1.Controls.Add(numericUpDown6_3, 3, 6);
             tableLayoutPanel1.Location = new Point(212, 22);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 8;
@@ -664,15 +668,6 @@
             numericUpDown6_4.Size = new Size(36, 23);
             numericUpDown6_4.TabIndex = 40;
             // 
-            // numericUpDown6_3
-            // 
-            numericUpDown6_3.Location = new Point(129, 129);
-            numericUpDown6_3.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
-            numericUpDown6_3.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
-            numericUpDown6_3.Name = "numericUpDown6_3";
-            numericUpDown6_3.Size = new Size(36, 23);
-            numericUpDown6_3.TabIndex = 39;
-            // 
             // numericUpDown6_2
             // 
             numericUpDown6_2.Location = new Point(87, 129);
@@ -928,13 +923,22 @@
             label16.TabIndex = 69;
             label16.Text = "2";
             // 
+            // numericUpDown6_3
+            // 
+            numericUpDown6_3.Location = new Point(129, 129);
+            numericUpDown6_3.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            numericUpDown6_3.Minimum = new decimal(new int[] { 1, 0, 0, int.MinValue });
+            numericUpDown6_3.Name = "numericUpDown6_3";
+            numericUpDown6_3.Size = new Size(36, 23);
+            numericUpDown6_3.TabIndex = 39;
+            // 
             // label2
             // 
             label2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             label2.AutoSize = true;
             label2.Location = new Point(322, 4);
             label2.Name = "label2";
-            label2.Size = new Size(111, 15);
+            label2.Size = new Size(110, 15);
             label2.TabIndex = 7;
             label2.Text = "Matrix Connections";
             // 
@@ -968,11 +972,59 @@
             button_Reset.UseVisualStyleBackColor = true;
             button_Reset.Click += button_Reset_Click;
             // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(196, 227);
+            label10.Name = "label10";
+            label10.Size = new Size(84, 15);
+            label10.TabIndex = 11;
+            label10.Text = "F2 - AutoSolve";
+            // 
+            // label18
+            // 
+            label18.AutoSize = true;
+            label18.Location = new Point(196, 242);
+            label18.Name = "label18";
+            label18.Size = new Size(97, 15);
+            label18.TabIndex = 12;
+            label18.Text = "F3 - Cancel Solve";
+            label18.Click += label18_Click;
+            // 
+            // checkBox1_Optimalizer
+            // 
+            checkBox1_Optimalizer.AutoSize = true;
+            checkBox1_Optimalizer.Checked = true;
+            checkBox1_Optimalizer.CheckState = CheckState.Checked;
+            checkBox1_Optimalizer.Location = new Point(9, 315);
+            checkBox1_Optimalizer.Name = "checkBox1_Optimalizer";
+            checkBox1_Optimalizer.Size = new Size(189, 19);
+            checkBox1_Optimalizer.TabIndex = 13;
+            checkBox1_Optimalizer.Text = "Optimalize Horizontal Distance";
+            checkBox1_Optimalizer.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1_HumanReadable
+            // 
+            checkBox1_HumanReadable.AutoSize = true;
+            checkBox1_HumanReadable.Checked = true;
+            checkBox1_HumanReadable.CheckState = CheckState.Checked;
+            checkBox1_HumanReadable.Location = new Point(431, 315);
+            checkBox1_HumanReadable.Name = "checkBox1_HumanReadable";
+            checkBox1_HumanReadable.Size = new Size(117, 19);
+            checkBox1_HumanReadable.TabIndex = 14;
+            checkBox1_HumanReadable.Text = "Human Readable";
+            checkBox1_HumanReadable.UseVisualStyleBackColor = true;
+            checkBox1_HumanReadable.CheckedChanged += checkBox1_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(555, 334);
+            Controls.Add(checkBox1_HumanReadable);
+            Controls.Add(checkBox1_Optimalizer);
+            Controls.Add(label18);
+            Controls.Add(label10);
             Controls.Add(button_Reset);
             Controls.Add(Limit_Steps);
             Controls.Add(Limit_Gscore);
@@ -1028,7 +1080,6 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_5).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_2).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown6_1).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1_7).EndInit();
@@ -1044,6 +1095,7 @@
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_5).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_6).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown7_7).EndInit();
+            ((System.ComponentModel.ISupportInitialize)numericUpDown6_3).EndInit();
             ((System.ComponentModel.ISupportInitialize)Limit_Steps).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -1127,5 +1179,9 @@
         private Label label17;
         private Label label15;
         private Label label16;
+        private Label label10;
+        private Label label18;
+        private CheckBox checkBox1_Optimalizer;
+        private CheckBox checkBox1_HumanReadable;
     }
 }

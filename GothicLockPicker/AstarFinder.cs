@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Numerics;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace GothicLockPicker
@@ -14,7 +15,7 @@ namespace GothicLockPicker
         public int FCost = 0;
         public List<int> Graphvalue = new List<int>();
 
-        public Tuple<int, int> MoveParent = Tuple.Create(0, 0);
+        public Tuple<int, int> MoveParent = Tuple.Create(0, 0); //First key it is Index(Parent) Second is Move
         public Node? Parent = null;
         public Node(List<int> graphValue)
         {
@@ -81,6 +82,18 @@ namespace GothicLockPicker
             }
             return result;
         }
+        public static int GetHeuristicWithVertical(Node Current, Node Parent)
+        {
+            int result = 0;
+            int CurrentPos = Current.MoveParent.Item1;
+            for (int i = 0; i < Current.Graphvalue.Count(); i++)
+            {
+                int diffhorizontal = Math.Abs(Current.Graphvalue[i] - 3); // Distance to middle Position
+                int diffvertical = Math.Abs(CurrentPos - i); // Distance to CurrentPosition
+                result += (diffhorizontal + diffvertical);
+            }
+            return result;
+        }
         static private string getRoadHumanReadable(Node? CurrNode)
         {
             List<string> result = new List<string>();
@@ -94,6 +107,55 @@ namespace GothicLockPicker
             //Reverse Stringh
             result.Reverse();
             return string.Join("\r\n", result);
+        }
+        static private string getRoadToSolver(Node? CurrNode)
+        {
+            if (CurrNode == null)
+            {
+                return "";
+            }
+            int CurrposLock = CurrNode.MoveParent.Item1;
+            List<string> result = new List<string>();
+            int lastIndex = 0;
+            while (CurrNode != null && CurrNode?.Parent != null)
+            {
+                int MoveValue = CurrNode.MoveParent.Item2;
+                int MoveIndex = CurrNode.MoveParent.Item1;
+                while (CurrposLock != MoveIndex)
+                {
+                    if (CurrposLock > MoveIndex)
+                    {
+                        result.Add("W"); //INVERT!
+                        CurrposLock--;
+
+                    }
+                    else if(CurrposLock< MoveIndex)
+                    {
+                        result.Add("S");
+                        CurrposLock++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                //Moving vertical
+                result.Add(MoveValue == 1 ? "A" : "D"); //Moving horizontal
+                if(CurrNode.Parent!=null && CurrNode.Parent.Parent == null) //Last Iteration?
+                {
+                    lastIndex = CurrNode.MoveParent.Item1;
+                }
+                CurrNode = CurrNode.Parent;
+            }
+            result.Reverse();
+
+            for (int i = 0; i < lastIndex; i++)
+            {
+                //result.("W"); //Add To Begin
+                result.Insert(0, "W");
+            }
+            //Add to first lock 
+            return string.Join(",", result);
         }
 
         //we have to get new node or bool multi type something?
@@ -159,8 +221,12 @@ namespace GothicLockPicker
             }
             return neighbours;
         }
+
+        public static int getVerticalDistance(Node node1, Node node2) {
+            return Math.Abs(node1.MoveParent.Item1 - node2.MoveParent.Item1);
+        }
         
-        public static string GetResolve(int[,] matrix, BindingList<LockRow> lockRows, int limitCost)
+        public static string GetResolve(int[,] matrix, BindingList<LockRow> lockRows, int limitCost, bool SolveForSolver = false, bool MinimalizeMovingOnKey = false)
         {
             //1.st convert lockRows to List<Node>Graph
             Node StartPoint = new Node(lockRows);
@@ -176,13 +242,14 @@ namespace GothicLockPicker
                 Node CurrentNode = OpenSet.Dequeue();
                 if (CurrentNode.GCost >= limitCost)
                 {
-                    return "FAILED TO FIND SOLUTION, COST LIMIT REACHED";
+                    return SolveForSolver ? "FAILED TO FIND SOLUTION, COST LIMIT REACHED" : "";
                 }
 
                 if (IsGoal(CurrentNode))
                 {
                     //We have reached the goal, now we have to get the path from the start to the goal
-                    return getRoadHumanReadable(CurrentNode);
+
+                    return SolveForSolver ?  getRoadToSolver(CurrentNode) :  getRoadHumanReadable(CurrentNode);
                 }
                 visited.Add(string.Join(",", CurrentNode.Graphvalue));
                 List<Node> Neighbours = GetNeighbours(CurrentNode, matrix);
@@ -191,21 +258,31 @@ namespace GothicLockPicker
                     string keyNeigh = string.Join(",", Neighbour.Graphvalue);
                     int newG = CurrentNode.GCost + 1;
 
+                    int FCost = 0;
                     if (bestG.TryGetValue(keyNeigh, out int oldG) && oldG <= newG)
                     {
                         continue;
                     }
 
-                    Neighbour.GCost = newG;
-                    Neighbour.FCost = newG + GetHeuristic(Neighbour);
+                    if (MinimalizeMovingOnKey == true)
+                    {
+                        newG += getVerticalDistance(CurrentNode, Neighbour); //Add Vertical Distance
+                        FCost = newG +GetHeuristicWithVertical(CurrentNode,Neighbour); //New Heuristic with Distance in Vertical
+                    }
+                    else
+                    {
+                        FCost = newG + GetHeuristic(Neighbour);
+                    }
                     Neighbour.Parent = CurrentNode;
+                    Neighbour.FCost = FCost;
+                    Neighbour.GCost = newG;
 
                     bestG[keyNeigh] = newG;
                     OpenSet.Enqueue(Neighbour, Neighbour.FCost);
                 }
 
             }
-            return "FAILED TO FIND SOLUTION";
+            return SolveForSolver ? "FAILED TO FIND SOLUTION FOR SOLVER" : "";
         }
 
     }
