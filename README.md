@@ -26,7 +26,7 @@ Connection value:
 - **1** = The Same direction
 
 
-![Photo from the GothicLockPicker](example.PNG)
+![Photo from the GothicLockPicker](example.png)
 
 
 # Possible Future Features
