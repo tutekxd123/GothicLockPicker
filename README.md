@@ -7,6 +7,8 @@ A simple tool to solve a puzzle game from the game Gothic Remake. Written in pla
 - Uses the algorithm A* with a heuristic
 - Limits the maximum number of solving steps
 - Finds the minimum required steps to open the lock
+- Optimalizaton for Horizontal Moves
+- Automatically solves locks in-game by pressing the required keys
 
 # Info About Lock
 ![Photo from game with lock](plates.png)
@@ -23,8 +25,9 @@ Connection value:
 - **0** = no connection
 - **1** = The Same direction
 
+
 ![Photo from the GothicLockPicker](example.PNG)
 
 
 # Possible Future Features
-- Auto Solve In game by pressing keys
+- [x] Auto Solve In game by pressing keys 
